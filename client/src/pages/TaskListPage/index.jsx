@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../config";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import TaskFilter from "../../components/TaskFilter";
@@ -14,7 +15,7 @@ const TaskListPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tasks?assignedTo=${filter.assigneeId}&status=${filter.status}&createdBy=${filter.createdById}`, { withCredentials: true })
+        axios.get(`${config.API_BASE_URL}/api/tasks?assignedTo=${filter.assigneeId}&status=${filter.status}&createdBy=${filter.createdById}`, { withCredentials: true })
             .then((res) => setTasks(res.data))
             .catch((err) => {
                 if (err.response?.status === 403 || err.response?.status === 401) {

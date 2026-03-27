@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../config";
 import { useState } from "react";
 
 const TaskTableRow = ({ task: initialTask, setErrorSuccess, onTaskChange }) => {
@@ -13,14 +14,14 @@ const TaskTableRow = ({ task: initialTask, setErrorSuccess, onTaskChange }) => {
     }
 
     const handleTaskUpdate = (taskData) => {
-        axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/tasks/${taskData.id}`, taskData, { withCredentials: true })
+        axios.put(`${config.API_BASE_URL}/api/tasks/${taskData.id}`, taskData, { withCredentials: true })
             .then(() => showFeedback(false, 'Task updated'))
             .catch((err) => showFeedback(true, err.response?.data?.error || 'Update failed'))
     }
 
     const handleDelete = () => {
         setShowDeleteModal(false)
-        axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/tasks/${task.id}`, { withCredentials: true })
+        axios.delete(`${config.API_BASE_URL}/api/tasks/${task.id}`, { withCredentials: true })
             .then(() => { showFeedback(false, 'Task deleted'); if (onTaskChange) onTaskChange() })
             .catch((err) => showFeedback(true, err.response?.data?.error || 'Delete failed'))
     }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -20,7 +21,7 @@ const LoginForm = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
+      const response = await axios.post(`${config.API_BASE_URL}/auth/login`, {
         email: formData.email,
         password: formData.password
       }, { withCredentials: true });

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import config from "../../config";
 
 const TaskFormModal = ({ onTaskCreated }) => {
 
@@ -16,7 +17,7 @@ const TaskFormModal = ({ onTaskCreated }) => {
         if (payload.assignedTo.id === '') delete payload.assignedTo
         if (payload.status === '') delete payload.status
 
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tasks`, payload, { withCredentials: true })
+        axios.post(`${config.API_BASE_URL}/api/tasks`, payload, { withCredentials: true })
             .then(() => {
                 setErrorSuccess({ error: false, message: 'Task created successfully' })
                 if (onTaskCreated) onTaskCreated()

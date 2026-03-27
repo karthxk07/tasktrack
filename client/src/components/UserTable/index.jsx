@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 const UserTable = ({ users, onUserUpdate }) => {
 
@@ -10,7 +11,7 @@ const UserTable = ({ users, onUserUpdate }) => {
 
     const handleUpdateRole = (userId, roleName) => {
         setIsLoading(true)
-        axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/users/${userId}?role=${roleName}`, {}, { withCredentials: true })
+        axios.put(`${config.API_BASE_URL}/api/users/${userId}?role=${roleName}`, {}, { withCredentials: true })
             .then((res) => {
                 setFeedback({ type: 'success', message: res.data.message || 'Role updated' })
                 if (onUserUpdate) onUserUpdate()

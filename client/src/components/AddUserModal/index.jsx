@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 const AddUserModal = ({ onUserAdded }) => {
 
@@ -17,7 +18,7 @@ const AddUserModal = ({ onUserAdded }) => {
         setIsLoading(true)
         setErrorSuccess({ error: null, message: '' })
 
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/register`, formData, { withCredentials: true })
+        axios.post(`${config.API_BASE_URL}/auth/register`, formData, { withCredentials: true })
             .then(() => {
                 setErrorSuccess({ error: false, message: 'User registered' })
                 setFormData({ name: '', email: '', password: '' })

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import config from "../../config";
 import Topbar from "../../components/Topbar";
 import UserTable from "../../components/UserTable";
 import UserSearch from "../../components/UserSearch";
@@ -15,7 +16,7 @@ const UsersListPage = () => {
     const fetchUsers = () => {
         setIsLoading(true)
         setError('')
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users`, { withCredentials: true })
+        axios.get(`${config.API_BASE_URL}/api/users`, { withCredentials: true })
             .then((res) => { setUsers(res.data); setDisplayUsers(res.data) })
             .catch((err) => setError(err.response?.data?.message || 'Failed to fetch users'))
             .finally(() => setIsLoading(false))

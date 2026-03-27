@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../config";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
@@ -8,13 +9,13 @@ const Topbar = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/auth/me`, { withCredentials: true })
+        axios.get(`${config.API_BASE_URL}/auth/me`, { withCredentials: true })
             .then((res) => setUser({ email: res.data.email, role: res.data.role }))
             .catch(() => { })
     }, [])
 
     const handleLogout = () => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/auth/logout`, { withCredentials: true })
+        axios.get(`${config.API_BASE_URL}/auth/logout`, { withCredentials: true })
             .then(() => navigate('/login'))
             .catch(() => { })
     }
