@@ -1,70 +1,154 @@
-# Getting Started with Create React App
+# TaskTrack — Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The React frontend for TaskTrack, a task management system with role-based access control.
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+- **React 19** with Create React App
+- **Bootstrap 5** for UI components
+- **Axios** for HTTP requests
+- **React Router v7** for client-side routing
+- **Nginx** for serving the production build in Docker
 
-### `npm start`
+## Application Flow
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+┌──────────────────────────────────────────────────────┐
+│                      App.js                          │
+│                                                      │
+│  PublicRoute (unauthenticated)                       │
+│  ├── /          → LoginPage                          │
+│  └── /login     → LoginPage                          │
+│                                                      │
+│  ProtectedRoute (authenticated)                      │
+│  ├── /tasks     → TaskListPage                       │
+│  └── /users     → UsersListPage (admin only)         │
+└──────────────────────────────────────────────────────┘
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Authentication Flow
 
-### `npm test`
+1. User visits `/login` → `LoginForm` sends credentials to `POST /auth/login`
+2. Backend creates a session cookie (`JSESSIONID`)
+3. All subsequent API calls include `withCredentials: true` to send the cookie
+4. `ProtectedRoute` checks session via `GET /auth/me` — redirects to `/login` if unauthenticated
+5. `PublicRoute` redirects already-authenticated users to `/tasks`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Pages
 
-### `npm run build`
+| Page             | Route    | Description                              |
+| ---------------- | -------- | ---------------------------------------- |
+| `LoginPage`      | `/login` | Login form with branding                 |
+| `TaskListPage`   | `/tasks` | Task list with filters, create, edit, delete |
+| `UsersListPage`  | `/users` | User management with search and role editing (admin) |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Components
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Component        | Purpose                                          |
+| ---------------- | ------------------------------------------------ |
+| `Topbar`         | Navigation bar with user info and logout          |
+| `LoginForm`      | Email/password login form                         |
+| `TaskTable`      | Renders the task list table                       |
+| `TaskTableRow`   | Individual task row with inline edit and delete   |
+| `TaskFilter`     | Filter tasks by status, assignee, creator         |
+| `TaskFormModal`  | Modal form to create new tasks                    |
+| `UserTable`      | Renders the user list with role management        |
+| `UserSearch`     | Search users by email or ID                       |
+| `AddUserModal`   | Modal form to register new users                  |
+| `ProtectedRoute` | Route guard — requires authentication             |
+| `PublicRoute`    | Route guard — redirects if already authenticated  |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Runtime Configuration
 
-### `npm run eject`
+Environment variables are injected at **runtime** (not build time) so the same Docker image works in any environment.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**How it works:**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. `public/env-config.js` — Loaded via a `<script>` tag in `index.html`
+2. At container startup, the Dockerfile's `CMD` generates `env-config.js` from all `REACT_APP_*` environment variables
+3. `src/config.js` reads from `window._env_` with a localhost fallback
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+Docker Compose env → Container startup → env-config.js → window._env_ → config.js
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Environment Variables
 
-## Learn More
+| Variable                 | Description       | Default                  |
+| ------------------------ | ----------------- | ------------------------ |
+| `REACT_APP_API_BASE_URL` | Backend API URL   | `http://localhost:8080`  |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Local Development
 
-### Code Splitting
+```bash
+cd client
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+# Create .env (optional, config.js has a localhost fallback)
+echo "REACT_APP_API_BASE_URL=http://localhost:8080" > .env
 
-### Analyzing the Bundle Size
+# Install dependencies
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Start dev server
+npm start
+```
 
-### Making a Progressive Web App
+The app runs at `http://localhost:3000` and proxies API calls to `http://localhost:8080`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Docker (Standalone)
 
-### Advanced Configuration
+```bash
+cd client
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+docker build -t tasktrack-client .
 
-### Deployment
+docker run -p 3000:80 \
+  -e REACT_APP_API_BASE_URL=http://localhost:8080 \
+  tasktrack-client
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Docker Compose (Full Stack)
 
-### `npm run build` fails to minify
+From the project root:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+docker compose up --build
+```
+
+The client is available at `http://localhost:3000`. See the [root README](../README.md) for full setup instructions.
+
+## Project Structure
+
+```
+client/
+├── public/
+│   ├── index.html          # Entry HTML with env-config.js script tag
+│   └── env-config.js       # Runtime env vars (generated in Docker)
+├── src/
+│   ├── config.js           # Central config (window._env_ → process.env → fallback)
+│   ├── App.js              # Router setup
+│   ├── index.js             # React entry point
+│   ├── index.css            # Global styles
+│   ├── components/          # Reusable UI components
+│   │   ├── AddUserModal/
+│   │   ├── LoginForm/
+│   │   ├── ProtectedRoute/
+│   │   ├── PublicRoute/
+│   │   ├── TaskFilter/
+│   │   ├── TaskFormModal/
+│   │   ├── TaskTable/
+│   │   ├── TaskTableRow/
+│   │   ├── Topbar/
+│   │   ├── UserSearch/
+│   │   └── UserTable/
+│   └── pages/               # Page-level components
+│       ├── LoginPage/
+│       ├── TaskListPage/
+│       └── UsersListPage/
+├── Dockerfile
+├── nginx.conf
+├── .dockerignore
+└── package.json
+```
