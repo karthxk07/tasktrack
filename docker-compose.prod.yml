@@ -1,6 +1,6 @@
 services:
   backend:
-    image: daddysaurus/tasktrack-backend
+    image: karthxk07/tasktrack-backend
     ports:
       - "8080:8080"
     environment:
@@ -13,7 +13,7 @@ services:
       db:
         condition: service_healthy
   client:
-    image: daddysaurus/tasktrack-client
+    image: karthxk07/tasktrack-client
     ports:
       - "80:80"
     depends_on:
