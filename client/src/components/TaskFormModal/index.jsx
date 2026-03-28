@@ -4,7 +4,7 @@ import config from "../../config";
 
 const TaskFormModal = ({ onTaskCreated }) => {
 
-    const [task, setTask] = useState({ title: '', description: '', assignedTo: { id: '' }, status: '' })
+    const [task, setTask] = useState({ title: '', description: '', assignedTo: { id: '' }, status: 'TODO' })
     const [errorSuccess, setErrorSuccess] = useState({ error: null, message: '' })
 
     const handleChange = (e) => {
@@ -13,6 +13,12 @@ const TaskFormModal = ({ onTaskCreated }) => {
 
     const onSubmit = (e) => {
         e.preventDefault()
+
+        if (!task.title.trim() || !task.description.trim()) {
+            setErrorSuccess({ error: true, message: 'Title and description cannot be empty' })
+            return;
+        }
+
         const payload = { ...task }
         if (payload.assignedTo.id === '') delete payload.assignedTo
         if (payload.status === '') delete payload.status
@@ -54,8 +60,7 @@ const TaskFormModal = ({ onTaskCreated }) => {
                                 <label htmlFor="assignedTo.id" className="text-secondary">Assignee ID</label>
                             </div>
                             <div className="form-floating mb-4">
-                                <select className="form-select bg-black text-light border-0 rounded-3" id="status" onChange={handleChange}>
-                                    <option value="">Auto</option>
+                                <select className="form-select bg-black text-light border-0 rounded-3" id="status" value={task.status} onChange={handleChange}>
                                     <option value="TODO">TODO</option>
                                     <option value="IN_PROGRESS">IN_PROGRESS</option>
                                     <option value="DONE">DONE</option>

@@ -157,6 +157,10 @@ The API uses a `GlobalExceptionHandler` (`@ControllerAdvice`) to provide consist
 
 Handled exceptions include `ResourceNotFoundException` (404) for missing users/tasks, `UsernameNotFoundException` (404) for invalid login credentials, `IllegalArgumentException` (400) for duplicate emails, `SecurityException` (403) for unauthorized actions, and a catch-all handler (500) for unexpected errors. Stack traces are never exposed to clients.
 
+## Default Admin User
+
+When the application starts, it checks for `ADMIN_EMAIL` and `ADMIN_PASSWORD` environment variables. If present, it creates a default user with the `ROLE_ADMIN` role using these credentials (if the user doesn't already exist). This is especially useful for setting up an initial administrator account automatically when deploying via Docker.
+
 ## Deployment
 
 ### Prerequisites
@@ -177,6 +181,8 @@ MYSQL_DB_NAME=tasktrackerdb
 MYSQL_DB_USERNAME=your_username
 MYSQL_DB_PASSWORD=your_password
 MYSQL_ROOT_PASSWORD=your_root_password
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin
 ```
 
 The backend's `application.properties` imports this file via:
@@ -197,6 +203,8 @@ Or with explicit env vars:
 DB_URL="jdbc:mysql://localhost:3306/tasktrackerdb?createDatabaseIfNotExist=true" \
 DB_USERNAME="your_username" \
 DB_PASSWORD="your_password" \
+ADMIN_EMAIL="admin@example.com" \
+ADMIN_PASSWORD="admin" \
 ./mvnw spring-boot:run
 ```
 
@@ -213,6 +221,8 @@ docker run -p 8080:8080 \
   -e DB_URL="jdbc:mysql://host.docker.internal:3306/tasktrackerdb?createDatabaseIfNotExist=true" \
   -e DB_USERNAME="your_username" \
   -e DB_PASSWORD="your_password" \
+  -e ADMIN_EMAIL="admin@example.com" \
+  -e ADMIN_PASSWORD="admin" \
   tasktrack-backend
 ```
 

@@ -18,7 +18,7 @@ const UserSearch = ({ onSearchResults, onClear }) => {
 
         const request = searchType === 'id'
             ? axios.get(`${config.API_BASE_URL}/api/users/${searchTerm}`, { withCredentials: true }).then((res) => onSearchResults([res.data]))
-            : axios.get(`${config.API_BASE_URL}/api/users/email?email=${encodeURIComponent(searchTerm)}`, { withCredentials: true }).then((res) => onSearchResults(Array.isArray(res.data) ? res.data : [res.data]))
+            : axios.get(`${config.API_BASE_URL}/api/users?email=${encodeURIComponent(searchTerm)}`, { withCredentials: true }).then((res) => onSearchResults(Array.isArray(res.data) ? res.data : [res.data]))
 
         request.catch((err) => { setError(err.response?.data?.message || 'Search failed'); onSearchResults([]) })
             .finally(() => setIsLoading(false))

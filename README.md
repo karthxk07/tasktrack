@@ -63,6 +63,8 @@ MYSQL_DB_NAME=tasktrackerdb
 MYSQL_DB_USERNAME=your_username
 MYSQL_DB_PASSWORD=your_password
 MYSQL_ROOT_PASSWORD=your_root_password
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin
 ```
 
 ### 3. Start all services
@@ -94,6 +96,8 @@ docker compose down -v    # delete volumes too
 | `MYSQL_DB_USERNAME`   | Database username            | Docker (MySQL, Backend) |
 | `MYSQL_DB_PASSWORD`   | Database password            | Docker (MySQL, Backend) |
 | `MYSQL_ROOT_PASSWORD` | MySQL root password          | Docker (MySQL)   |
+| `ADMIN_EMAIL`         | Default Admin User Email     | Docker (Backend) |
+| `ADMIN_PASSWORD`      | Default Admin User Password  | Docker (Backend) |
 
 ## Documentation
 

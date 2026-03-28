@@ -18,6 +18,13 @@ const AddUserModal = ({ onUserAdded }) => {
         setIsLoading(true)
         setErrorSuccess({ error: null, message: '' })
 
+        const { password } = formData;
+        if (password.length < 6 || !(/[A-Z]/.test(password)) || !(/[!@#$%^&*(),.?":{}|<>]/.test(password))) {
+            setErrorSuccess({ error: true, message: 'Password must be at least 6 characters, contain 1 uppercase letter and 1 special character' })
+            setIsLoading(false)
+            return;
+        }
+
         axios.post(`${config.API_BASE_URL}/auth/register`, formData, { withCredentials: true })
             .then(() => {
                 setErrorSuccess({ error: false, message: 'User registered' })

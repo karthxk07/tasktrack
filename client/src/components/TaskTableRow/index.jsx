@@ -65,7 +65,13 @@ const TaskTableRow = ({ task: initialTask, setErrorSuccess, onTaskChange }) => {
                         {!editEnabled ? (
                             <button className="btn btn-outline-light border-0 rounded-3" onClick={() => setEditEnabled(true)}>Edit</button>
                         ) : (
-                            <button className="btn btn-success border-0 rounded-3" onClick={() => { setEditEnabled(false); handleTaskUpdate(task) }}>Save</button>
+                            <button className="btn btn-success border-0 rounded-3" onClick={() => {
+                                if (!task.title.trim() || !task.description.trim()) {
+                                    showFeedback(true, 'Title and description cannot be empty')
+                                    return;
+                                }
+                                setEditEnabled(false); handleTaskUpdate(task)
+                            }}>Save</button>
                         )}
                         <button className="btn btn-outline-danger border-0 rounded-3" onClick={() => setShowDeleteModal(true)}>Delete</button>
                     </div>
