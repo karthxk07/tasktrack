@@ -187,7 +187,7 @@ ADMIN_PASSWORD=admin
 
 The backend's `application.properties` imports this file via:
 ```properties
-spring.config.import=optional:file:../../.env[.properties]
+spring.config.import=optional:file:../.env[.properties],optional:file:.env[.properties] 
 ```
 
 **2. Build and run**
