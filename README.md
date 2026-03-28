@@ -11,6 +11,37 @@ A full-stack task management system for teams to organize, assign, and track tas
 | Database  | MySQL                                           |
 | DevOps    | Docker                                          |
 
+## Demo Flows
+
+### Admin Flow - Create Users and update user roles 
+- registering users
+- updating user roles
+- searching users with - email and id 
+
+https://github.com/user-attachments/assets/1dfe695a-9aa8-4436-a760-2f35de2e6dea
+
+### Admin Flow - Manage tasks (Delete and update)
+- delete excusively available to admin roles only
+
+https://github.com/user-attachments/assets/ac22f26a-9ac9-4dd7-8b59-4c85605d4add
+
+### User flow - create task
+- create a task with an assigned user
+- create a task without any assigned user
+- Task details validation
+  - Task title should be minimum 5 characters
+  - Task description must be minimum 10 character
+  - otherwise a error is thrown
+
+https://github.com/user-attachments/assets/af391946-3401-465e-8d6f-7b540a4daf11
+
+### User flow - update assigned task status
+- update assigned task's status
+- update protection if user is not a Admin/Creator/Asignee
+- delete action exclusively for admins only
+
+https://github.com/user-attachments/assets/1ffd0f7a-e7e4-448f-8779-43f04f833710
+
 ## Architecture
 
 ```
