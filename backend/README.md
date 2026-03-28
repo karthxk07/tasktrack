@@ -4,12 +4,8 @@ The Spring Boot REST API for TaskTrack, providing authentication, task managemen
 
 ## Tech Stack
 
-- **Spring Boot 4.0.4** with Spring MVC
-- **Spring Security** — Session-based authentication
-- **Spring Data JPA** with Hibernate 7
-- **MySQL 8.0** — Relational database
-- **Lombok** — Boilerplate reduction
-- **Bean Validation** — Request validation via Jakarta Validation
+- **Spring Boot** with Spring MVC
+- **MySQL** — Relational database
 
 ## API Documentation
 
