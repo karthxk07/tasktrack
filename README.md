@@ -6,10 +6,10 @@ A full-stack task management system for teams to organize, assign, and track tas
 
 | Layer     | Technology                                      |
 | --------- | ----------------------------------------------- |
-| Frontend  | React 19, Bootstrap 5, Axios, React Router v7   |
-| Backend   | Spring Boot 4, Spring Security, Hibernate, JPA  |
-| Database  | MySQL 8.0                                       |
-| Infra     | Docker, Docker Compose, Nginx                   |
+| Frontend  | React , Bootstrap                               |
+| Backend   | Spring Boot                                     |
+| Database  | MySQL                                           |
+| DevOps    | Docker                                          |
 
 ## Architecture
 
