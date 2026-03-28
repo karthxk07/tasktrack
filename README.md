@@ -66,7 +66,8 @@ https://github.com/user-attachments/assets/1ffd0f7a-e7e4-448f-8779-43f04f833710
 task-management-system/
 ├── backend/          # Spring Boot REST API
 ├── client/           # React SPA
-├── docker-compose.yaml
+├── docker-compose.dev.yml  # Docker Compose for development
+├── docker-compose.prod.yml # Docker Compose for production
 ├── .env              # Environment variables (git-ignored)
 └── .env.example      # Template for .env
 ```
@@ -98,10 +99,12 @@ ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=admin
 ```
 
-### 3. Start all services
+### 3. Development Deployment
+
+To build and run from source code:
 
 ```bash
-docker compose up --build
+docker compose -f docker-compose.dev.yml up --build
 ```
 
 This starts three containers:
@@ -112,11 +115,32 @@ This starts three containers:
 | Backend   | http://localhost:8080     |
 | MySQL     | localhost:3306            |
 
-### 4. Stop
+### 4. Production Deployment
+
+To run using pre-built images from Docker Hub:
 
 ```bash
-docker compose down       # keep data
-docker compose down -v    # delete volumes too
+docker compose -f docker-compose.prod.yml up -d
+```
+
+In production, the client binds to port 80:
+
+| Service   | URL                      |
+| --------- | ------------------------ |
+| Client    | http://localhost:80       |
+| Backend   | http://localhost:8080     |
+| MySQL     | localhost:3306            |
+
+### 5. Stop Services
+
+```bash
+docker compose -f docker-compose.dev.yml down       # For dev
+docker compose -f docker-compose.prod.yml down      # For prod
+```
+
+To delete volumes as well:
+```bash
+docker compose -f docker-compose.dev.yml down -v
 ```
 
 ## Environment Variables
