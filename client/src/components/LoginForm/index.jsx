@@ -21,6 +21,7 @@ const LoginForm = () => {
     setSuccess('');
 
     try {
+      console.log(config.API_BASE_URL)
       const response = await axios.post(`${config.API_BASE_URL}/auth/login`, {
         email: formData.email,
         password: formData.password
