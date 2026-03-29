@@ -13,12 +13,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.github.karthxk07.task_management_system.security.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+  @Value("${FRONTEND_URL:http://localhost:3000}")
+  private String frontendUrl;
 
   private final CustomUserDetailsService customUserDetailsService;
 
@@ -33,7 +37,7 @@ public class SecurityConfiguration {
     http
         .cors(cors -> cors.configurationSource(request -> {
           CorsConfiguration config = new CorsConfiguration();
-          config.setAllowedOrigins(List.of("http://localhost:3000"));
+          config.setAllowedOrigins(List.of(frontendUrl));
           config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
           config.setAllowedHeaders(List.of("*"));
           config.setAllowCredentials(true);
