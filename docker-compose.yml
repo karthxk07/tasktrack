@@ -24,7 +24,7 @@ services:
     depends_on:
       - backend
     environment:
-      - VITE_APP_BASE_URL=${VITE_APP_DEV_BASE_URL}
+      - VITE_APP_BASE_URL=${VITE_APP_API_BASE_URL}
   db:
     image: mysql:8.0
     environment:
