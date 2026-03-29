@@ -33,7 +33,7 @@ public class SecurityConfiguration {
     http
         .cors(cors -> cors.configurationSource(request -> {
           CorsConfiguration config = new CorsConfiguration();
-          config.setAllowedOrigins(List.of("http://localhost", "http://35.154.161.149:80",
+          config.setAllowedOrigins(List.of("http://localhost", "http://13.235.69.23:80",
               "http://ec2-35-154-161-149.ap-south-1.compute.amazonaws.com", "http://localhost:8080",
               "http://localhost:3000"));
           config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
