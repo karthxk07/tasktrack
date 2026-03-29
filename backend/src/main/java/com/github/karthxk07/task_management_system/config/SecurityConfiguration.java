@@ -21,9 +21,6 @@ import com.github.karthxk07.task_management_system.security.CustomUserDetailsSer
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-  @Value("${FRONTEND_URL:http://localhost:3000}")
-  private String frontendUrl;
-
   private final CustomUserDetailsService customUserDetailsService;
 
   @Autowired
@@ -37,7 +34,7 @@ public class SecurityConfiguration {
     http
         .cors(cors -> cors.configurationSource(request -> {
           CorsConfiguration config = new CorsConfiguration();
-          config.setAllowedOrigins(List.of(frontendUrl));
+          config.setAllowedOrigins(List.of("*"));
           config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
           config.setAllowedHeaders(List.of("*"));
           config.setAllowCredentials(true);
